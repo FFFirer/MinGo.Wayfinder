@@ -63,120 +63,123 @@ const MenuDivider: Component = () => {
   return <li role="separator"><div class="md-menu-divider" /></li>;
 };
 
-const Menu: Component<MenuProps> = (props) => {
-  let triggerRef: HTMLDivElement | undefined;
-  let menuRef: HTMLUListElement | undefined;
+interface MenuComponent extends Component<MenuProps> {
+  Item: typeof MenuItem;
+  Divider: typeof MenuDivider;
+}
 
-  const [isOpen, setIsOpen] = createSignal(false);
-  const [menuStyles, setMenuStyles] = createSignal<Partial<CSSStyleDeclaration>>({});
+const Menu: MenuComponent = Object.assign(
+  (props: MenuProps) => {
+    let triggerRef: HTMLDivElement | undefined;
+    let menuRef: HTMLUListElement | undefined;
 
-  const placementMap: Record<NonNullable<MenuProps['anchor']>, Placement> = {
-    'top start': 'top-start',
-    'top end': 'top-end',
-    'bottom start': 'bottom-start',
-    'bottom end': 'bottom-end',
-  };
+    const [isOpen, setIsOpen] = createSignal(false);
+    const [posX, setPosX] = createSignal('0');
+    const [posY, setPosY] = createSignal('0');
 
-  const currentPlacement = () =>
-    placementMap[props.anchor ?? 'bottom start'];
+    const placementMap: Record<NonNullable<MenuProps['anchor']>, Placement> = {
+      'top start': 'top-start',
+      'top end': 'top-end',
+      'bottom start': 'bottom-start',
+      'bottom end': 'bottom-end',
+    };
 
-  const updatePosition = async () => {
-    if (!triggerRef || !menuRef) return;
+    const currentPlacement = () =>
+      placementMap[props.anchor ?? 'bottom start'];
 
-    const position = await computePosition(triggerRef, menuRef, {
-      placement: currentPlacement(),
-      middleware: [
-        offset(4),
-        flip({ padding: 8 }),
-        shift({ padding: 8 }),
-      ],
+    const updatePosition = async () => {
+      if (!triggerRef || !menuRef) return;
+
+      const position = await computePosition(triggerRef, menuRef, {
+        placement: currentPlacement(),
+        middleware: [
+          offset(4),
+          flip({ padding: 8 }),
+          shift({ padding: 8 }),
+        ],
+      });
+
+      setPosX(`${position.x}px`);
+      setPosY(`${position.y}px`);
+    };
+
+    const closeMenu = () => setIsOpen(false);
+
+    const handleTriggerClick = () => {
+      setIsOpen((prev) => !prev);
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        triggerRef &&
+        !triggerRef.contains(event.target as Node) &&
+        menuRef &&
+        !menuRef.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    onMount(() => {
+      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+
+      onCleanup(() => {
+        document.removeEventListener('click', handleClickOutside);
+        document.removeEventListener('keydown', handleEscapeKey);
+      });
     });
 
-    setMenuStyles({
-      position: 'absolute',
-      left: `${position.x}px`,
-      top: `${position.y}px`,
+    let cleanup: (() => void) | undefined;
+    createEffect(() => {
+      if (isOpen() && triggerRef && menuRef) {
+        updatePosition();
+        cleanup = autoUpdate(triggerRef, menuRef, updatePosition);
+      } else {
+        cleanup?.();
+        cleanup = undefined;
+      }
+
+      onCleanup(() => {
+        cleanup?.();
+      });
     });
-  };
 
-  const closeMenu = () => setIsOpen(false);
-
-  const handleTriggerClick = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      triggerRef &&
-      !triggerRef.contains(event.target as Node) &&
-      menuRef &&
-      !menuRef.contains(event.target as Node)
-    ) {
-      setIsOpen(false);
-    }
-  };
-
-  const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      setIsOpen(false);
-    }
-  };
-
-  onMount(() => {
-    document.addEventListener('click', handleClickOutside);
-    document.addEventListener('keydown', handleEscapeKey);
-
-    onCleanup(() => {
-      document.removeEventListener('click', handleClickOutside);
-      document.removeEventListener('keydown', handleEscapeKey);
-    });
-  });
-
-  // 当菜单打开时，启动位置更新
-  let cleanup: (() => void) | undefined;
-  createEffect(() => {
-    if (isOpen() && triggerRef && menuRef) {
-      // 先更新一次位置
-      updatePosition();
-      // 然后启动自动更新
-      cleanup = autoUpdate(triggerRef, menuRef, updatePosition);
-    } else {
-      cleanup?.();
-      cleanup = undefined;
-    }
-
-    onCleanup(() => {
-      cleanup?.();
-    });
-  });
-
-  return (
-    <MenuContext.Provider value={{ closeMenu }}>
-      <div
-        ref={triggerRef}
-        class="md-menu-trigger"
-        onClick={handleTriggerClick}
-        aria-haspopup="true"
-        aria-expanded={isOpen()}
-      >
-        {props.trigger}
-      </div>
-      {isOpen() && (
-        <ul
-          ref={menuRef}
-          class={`md-menu-popover menu p-2 shadow bg-base-100 rounded-box w-52 ${props.class ?? ''}`}
-          style={menuStyles()}
-          role="menu"
+    return (
+      <MenuContext.Provider value={{ closeMenu }}>
+        <div
+          ref={triggerRef}
+          class="md-menu-trigger"
+          onClick={handleTriggerClick}
+          aria-haspopup="true"
+          aria-expanded={isOpen()}
         >
-          {props.children}
-        </ul>
-      )}
-    </MenuContext.Provider>
-  );
-};
-
-Menu.Item = MenuItem;
-Menu.Divider = MenuDivider;
+          {props.trigger}
+        </div>
+        {isOpen() && (
+          <ul
+            ref={menuRef}
+            class={`md-menu-popover menu p-2 shadow bg-base-100 rounded-box w-52 ${props.class ?? ''}`}
+            style={{ position: 'absolute', left: posX(), top: posY() }}
+            role="menu"
+          >
+            {props.children}
+          </ul>
+        )}
+      </MenuContext.Provider>
+    );
+  },
+  {
+    Item: MenuItem,
+    Divider: MenuDivider,
+  }
+);
 
 export { Menu, MenuItem, MenuDivider };
 export default Menu;
