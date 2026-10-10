@@ -220,3 +220,77 @@ body {
   letter-spacing: 0.5px;
   font-weight: 500;
 }
+
+/* MD3 Shape Overrides for daisyui Components */
+
+/* Button: Small (8px) */
+.btn {
+  border-radius: var(--radius-small);
+}
+
+/* Card: Medium (12px) */
+.card {
+  border-radius: var(--radius-medium);
+}
+
+/* Dialog/Modal: Medium (12px) */
+.modal-box {
+  border-radius: var(--radius-medium);
+}
+
+/* TextField/Input: Small (8px) */
+.input,
+.textarea,
+.select {
+  border-radius: var(--radius-small);
+}
+
+/* Chip: Small (8px) */
+.badge {
+  border-radius: var(--radius-small);
+}
+
+/* NavigationBar: Large (16px) */
+.navbar {
+  border-radius: var(--radius-large);
+}
+
+/* FAB: Large (16px) */
+.btn-circle {
+  border-radius: var(--radius-full);
+}
+
+/* Avatar: Full (50%) */
+.avatar {
+  border-radius: var(--radius-full);
+}
+
+/* Menu/Dropdown: Small (8px) */
+.menu {
+  border-radius: var(--radius-small);
+}
+
+/* Tabs: Small (8px) */
+.tabs {
+  border-radius: var(--radius-small);
+}
+
+/* Alert: Medium (12px) */
+.alert {
+  border-radius: var(--radius-medium);
+}
+
+/* Progress: None (0px) */
+.progress {
+  border-radius: var(--radius-none);
+}
+
+/* Divider: None (0px) */
+.divider {
+  border-radius: var(--radius-none);
+}
+
+/* Tooltip: Small (8px) */
+.tooltip {
+  border-radius: var(--radius-small);
+}
