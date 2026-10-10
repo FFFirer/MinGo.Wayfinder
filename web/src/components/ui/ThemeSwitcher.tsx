@@ -1,5 +1,6 @@
-import { type Component, For } from 'solid-js';
+import { type Component, For, createMemo } from 'solid-js';
 import { useTheme, type ThemeMode } from '../../theme/useTheme';
+import { Menu } from './Menu';
 
 const themeOptions: { mode: ThemeMode; label: string; icon: Component }[] = [
   {
@@ -33,42 +34,37 @@ const themeOptions: { mode: ThemeMode; label: string; icon: Component }[] = [
 
 const ThemeSwitcher: Component = () => {
   const { themeMode, setThemeMode } = useTheme();
-  let detailsRef: HTMLDetailsElement | undefined;
+
+  const currentMode = createMemo(() => themeMode());
 
   const getCurrentIcon = () => {
-    const current = themeOptions.find((opt) => opt.mode === themeMode());
+    const current = themeOptions.find((opt) => opt.mode === currentMode());
     return current?.icon() ?? themeOptions[0].icon();
   };
 
   const handleThemeChange = (mode: ThemeMode) => {
     setThemeMode(mode);
-    if (detailsRef) {
-      detailsRef.removeAttribute('open');
-    }
   };
 
+  const trigger = (
+    <button type="button" class="btn btn-ghost btn-circle" aria-label="切换主题">
+      {getCurrentIcon()}
+    </button>
+  );
+
   return (
-    <details ref={detailsRef} class="dropdown dropdown-end">
-      <summary class="btn btn-ghost btn-circle" aria-label="切换主题">
-        {getCurrentIcon()}
-      </summary>
-      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-        <For each={themeOptions}>
-          {(option) => (
-            <li>
-              <button
-                type="button"
-                class={themeMode() === option.mode ? 'active' : ''}
-                onClick={() => handleThemeChange(option.mode)}
-              >
-                {option.icon()}
-                <span>{option.label}</span>
-              </button>
-            </li>
-          )}
-        </For>
-      </ul>
-    </details>
+    <Menu anchor="bottom end" trigger={trigger}>
+      <For each={themeOptions} key={(option) => option.mode}>
+        {(option) => (
+          <Menu.Item
+            icon={option.icon}
+            label={option.label}
+            selected={currentMode() === option.mode}
+            onClick={() => handleThemeChange(option.mode)}
+          />
+        )}
+      </For>
+    </Menu>
   );
 };
 
