@@ -9,16 +9,17 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "solid-js": "^1.9.5",
-    "@solidjs/router": "^0.15.3"
+    "@floating-ui/dom": "^1.8.0",
+    "@solidjs/router": "^0.15.3",
+    "solid-js": "^1.9.5"
   },
   "devDependencies": {
-    "vite": "^6.3.5",
-    "vite-plugin-solid": "^2.11.6",
-    "typescript": "^5.8.3",
-    "tailwindcss": "^4.1.7",
+    "@material/material-color-utilities": "^0.3.0",
     "@tailwindcss/vite": "^4.1.7",
     "daisyui": "^5.0.43",
-    "@material/material-color-utilities": "^0.3.0"
+    "tailwindcss": "^4.1.7",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-solid": "^2.11.6"
   }
 }
