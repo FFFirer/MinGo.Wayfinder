@@ -1,27 +1,14 @@
-import { type Component, createSignal } from 'solid-js';
+import { type Component } from 'solid-js';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 
 const Home: Component = () => {
-  const [isDark, setIsDark] = createSignal(false);
-
-  const toggleTheme = () => {
-    setIsDark(!isDark());
-    document.documentElement.setAttribute(
-      'data-theme',
-      isDark() ? 'dark' : 'light'
-    );
-  };
-
   return (
     <div class="space-y-8">
       <div class="flex items-center justify-between">
         <h1 class="md-headline-large text-on-background">
           Material Design 3 组件展示
         </h1>
-        <Button variant="outlined" onClick={toggleTheme}>
-          {isDark() ? '浅色模式' : '深色模式'}
-        </Button>
       </div>
 
       <section class="space-y-4">
