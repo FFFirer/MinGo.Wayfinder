@@ -20,7 +20,7 @@ const MainLayout: Component<MainLayoutProps> = (props) => {
 
   return (
     <div class="h-screen bg-background flex flex-col overflow-hidden">
-      <header class="navbar bg-surface shadow-sm px-4 flex-shrink-0">
+      <header class="navbar bg-surface shadow-sm px-4 shrink-0">
         <div class="navbar-start">
           <a href="/" class="btn btn-ghost md-title-large text-primary no-underline">
             Wayfinder
@@ -28,7 +28,6 @@ const MainLayout: Component<MainLayoutProps> = (props) => {
         </div>
         <div class="navbar-end gap-1">
           <IconButton
-            variant="filledTonal"
             onClick={handleCreateTask}
             title="新建任务"
           >
