@@ -13,10 +13,10 @@ interface ButtonProps {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  filled: 'btn-primary',
-  outlined: 'btn-outline btn-primary',
-  text: 'btn-ghost text-primary',
-  elevated: 'btn-primary shadow-md',
+  filled: 'btn-primary rounded-small',
+  outlined: 'btn-outline btn-primary rounded-small',
+  text: 'btn-ghost text-primary rounded-small',
+  elevated: 'btn-primary shadow-md rounded-small',
 };
 
 const Button: Component<ButtonProps> = (props) => {
@@ -34,7 +34,7 @@ const Button: Component<ButtonProps> = (props) => {
       type={type}
       disabled={disabled}
       onClick={onClick}
-      class={`btn ${variantClasses[variant]} ${className}`}
+      class={`btn ${variantClasses[variant]} md-label-large ${className}`}
     >
       {children}
     </button>

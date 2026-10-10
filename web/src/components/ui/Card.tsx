@@ -9,9 +9,9 @@ interface CardProps {
 }
 
 const variantClasses: Record<CardVariant, string> = {
-  elevated: 'bg-surface shadow-md',
-  filled: 'bg-surface-variant',
-  outlined: 'bg-surface border border-outline-variant',
+  elevated: 'bg-surface shadow-md rounded-medium',
+  filled: 'bg-surface-variant rounded-medium',
+  outlined: 'bg-surface border border-outline-variant rounded-medium',
 };
 
 const Card: Component<CardProps> = (props) => {
