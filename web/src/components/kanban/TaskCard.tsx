@@ -50,9 +50,12 @@ const TaskCard: Component<TaskCardProps> = (props) => {
       onClick={handleClick}
     >
       <div class="flex items-start justify-between gap-2 mb-2">
-        <h3 class="md-title-medium text-on-surface flex-1 line-clamp-2">
-          {props.task.title}
-        </h3>
+        <div class="flex-1 min-w-0">
+          <span class="md-label-small text-on-surface-variant/60 mr-1.5">#{props.task.id}</span>
+          <h3 class="md-title-medium text-on-surface inline line-clamp-2">
+            {props.task.title}
+          </h3>
+        </div>
         <div data-card-action>
           <Menu anchor="bottom end" trigger={
             <IconButton size="small" title="更多操作">

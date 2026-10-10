@@ -530,13 +530,14 @@ li[role="separator"] {
   padding: 16px;
   height: 100%;
   overflow-x: auto;
+  align-items: stretch;
 }
 
 /* Mobile: tab-based single column */
 .kanban-board-mobile {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
 }
 
 .kanban-mobile-content {

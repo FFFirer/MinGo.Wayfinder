@@ -196,6 +196,17 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
                   placeholder="输入任务标题"
                 />
 
+                <Show when={!isCreate()}>
+                  {(() => {
+                    const task = () => props.store.selectedTask();
+                    return (
+                      <p class="md-body-small text-on-surface-variant -mt-3">
+                        创建于 {task()?.createdAt}
+                      </p>
+                    );
+                  })()}
+                </Show>
+
                 <div>
                   <label class="md-body-small text-on-surface-variant mb-1.5 block">状态</label>
                   <Menu anchor="bottom start" trigger={

@@ -19,7 +19,7 @@ const MainLayout: Component<MainLayoutProps> = (props) => {
   };
 
   return (
-    <div class="min-h-screen bg-background flex flex-col">
+    <div class="h-screen bg-background flex flex-col overflow-hidden">
       <header class="navbar bg-surface shadow-sm px-4 flex-shrink-0">
         <div class="navbar-start">
           <a href="/" class="btn btn-ghost md-title-large text-primary no-underline">
