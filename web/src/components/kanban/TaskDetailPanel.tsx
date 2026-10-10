@@ -148,7 +148,10 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
                   <Show when={task()}>
                     <div class="space-y-5">
                       <div>
-                        <h3 class="md-headline-small text-on-surface mb-2">{task()!.title}</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                          <span class="md-label-small text-on-surface-variant/60">#{task()!.id}</span>
+                          <h3 class="md-headline-small text-on-surface">{task()!.title}</h3>
+                        </div>
                         <div class="flex items-center gap-2">
                           <Chip
                             label={STATUS_MAP[task()!.status].label}
