@@ -449,10 +449,23 @@ body {
 
 /* MD3 Menu Divider */
 .md-menu-divider {
-  height: 1px;
+  height: 1px !important;
+  min-height: 1px !important;
+  max-height: 1px !important;
   background-color: var(--color-outline-variant);
-  margin: 8px 0;
-  border: none;
+  margin: 8px 12px !important;
+  border: none !important;
+  padding: 0 !important;
+  display: block;
+}
+
+/* MD3 Menu Divider List Item */
+li[role="separator"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+  height: auto !important;
+  line-height: 0 !important;
 }
 
 /* Tabs: Small (8px) */
