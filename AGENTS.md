@@ -447,6 +447,7 @@ export function MyComponent(props: Props) {
 
 ### 样式规范
 
+- **MD3 组件规范**：优先遵循 [Material Design 3 官方文档](https://m3.material.io/components) 的组件规范和交互模式
 - 优先使用 daisyui 组件类名（btn, card, modal 等）
 - 使用 TailwindCSS 工具类进行微调
 - 颜色使用 daisyui 主题变量（primary, secondary, accent 等）

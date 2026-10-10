@@ -1,6 +1,6 @@
 import { type Component, type JSX } from 'solid-js';
 
-type ButtonVariant = 'filled' | 'outlined' | 'text' | 'elevated';
+type ButtonVariant = 'filled' | 'filledTonal' | 'outlined' | 'text' | 'elevated';
 type ButtonType = 'button' | 'submit' | 'reset';
 
 interface ButtonProps {
@@ -14,9 +14,10 @@ interface ButtonProps {
 
 const variantClasses: Record<ButtonVariant, string> = {
   filled: 'btn-primary',
-  outlined: 'btn-outline btn-primary',
-  text: 'btn-ghost text-primary',
-  elevated: 'btn-primary shadow-md',
+  filledTonal: 'bg-secondary-container text-on-secondary-container hover:bg-secondary-container/90',
+  outlined: 'bg-transparent border border-outline text-primary hover:bg-primary/8',
+  text: 'bg-transparent text-primary hover:bg-primary/8',
+  elevated: 'bg-surface-container-low text-primary md-elevation-1 hover:bg-surface-container-low/90',
 };
 
 const Button: Component<ButtonProps> = (props) => {

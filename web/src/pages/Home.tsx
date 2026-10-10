@@ -16,6 +16,7 @@ const Home: Component = () => {
         <Card variant="outlined">
           <div class="flex flex-wrap gap-4">
             <Button variant="filled">Filled</Button>
+            <Button variant="filledTonal">Filled Tonal</Button>
             <Button variant="outlined">Outlined</Button>
             <Button variant="text">Text</Button>
             <Button variant="elevated">Elevated</Button>

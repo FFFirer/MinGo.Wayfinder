@@ -34,6 +34,13 @@
   --color-inverse-on-surface: var(--md-inverse-on-surface);
   --color-inverse-primary: var(--md-inverse-primary);
 
+  /* MD3 Surface Container Colors */
+  --color-surface-container-lowest: var(--md-surface-container-lowest);
+  --color-surface-container-low: var(--md-surface-container-low);
+  --color-surface-container: var(--md-surface-container);
+  --color-surface-container-high: var(--md-surface-container-high);
+  --color-surface-container-highest: var(--md-surface-container-highest);
+
   /* MD3 Shape Scale */
   --radius-none: 0px;
   --radius-extra-small: 4px;
@@ -74,6 +81,20 @@
   --md-inverse-surface: #313033;
   --md-inverse-on-surface: #F4EFF4;
   --md-inverse-primary: #D0BCFF;
+
+  /* MD3 Surface Container Scale */
+  --md-surface-container-lowest: #FFFFFF;
+  --md-surface-container-low: #F7F2FA;
+  --md-surface-container: #F3EDF7;
+  --md-surface-container-high: #ECE6F0;
+  --md-surface-container-highest: #E6E0E9;
+
+  /* MD3 Elevation System */
+  --md-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --md-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.3);
+  --md-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] {
@@ -106,6 +127,13 @@
   --md-inverse-surface: #E6E1E5;
   --md-inverse-on-surface: #313033;
   --md-inverse-primary: #6750A4;
+
+  /* MD3 Surface Container Scale (Dark) */
+  --md-surface-container-lowest: #0F0D13;
+  --md-surface-container-low: #1D1B20;
+  --md-surface-container: #211F26;
+  --md-surface-container-high: #2B2930;
+  --md-surface-container-highest: #36343B;
 }
 
 body {
@@ -223,9 +251,19 @@ body {
 
 /* MD3 Shape Overrides for daisyui Components */
 
-/* Button: Small (8px) */
+/* Button: Full (9999px) - MD3 规范要求按钮使用完全圆角 */
 .btn {
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-full);
+  transition: filter 0.2s;
+}
+
+/* MD3 简化 State Layer - 使用 brightness 模拟交互反馈 */
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn:active {
+  filter: brightness(0.92);
 }
 
 /* Card: Medium (12px) */
@@ -293,4 +331,25 @@ body {
 /* Tooltip: Small (8px) */
 .tooltip {
   border-radius: var(--radius-small);
+}
+
+/* MD3 Elevation Utility Classes */
+.md-elevation-1 {
+  box-shadow: var(--md-elevation-1);
+}
+
+.md-elevation-2 {
+  box-shadow: var(--md-elevation-2);
+}
+
+.md-elevation-3 {
+  box-shadow: var(--md-elevation-3);
+}
+
+.md-elevation-4 {
+  box-shadow: var(--md-elevation-4);
+}
+
+.md-elevation-5 {
+  box-shadow: var(--md-elevation-5);
 }

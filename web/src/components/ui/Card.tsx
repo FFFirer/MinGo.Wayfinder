@@ -9,7 +9,7 @@ interface CardProps {
 }
 
 const variantClasses: Record<CardVariant, string> = {
-  elevated: 'bg-surface shadow-md',
+  elevated: 'bg-surface-container-low md-elevation-1',
   filled: 'bg-surface-variant',
   outlined: 'bg-surface border border-outline-variant',
 };
