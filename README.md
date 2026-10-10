@@ -29,7 +29,7 @@
 ├── README.md                    # 项目说明（本文件）
 ├── docs/                        # 设计文档
 │   └── 前端架构设计.md
-├── src/
+├── server/                      # ASP.NET Core 后端
 │   ├── Domain/                  # 领域层（核心）
 │   │   ├── Entities/           # 领域实体
 │   │   ├── ValueObjects/       # 值对象
@@ -51,19 +51,26 @@
 │   │   ├── Controllers/        # API 控制器
 │   │   ├── Middleware/         # 中间件
 │   │   └── Program.cs          # 应用入口
-│   ├── Migrations/             # EF Core 迁移程序集（独立）
-│   │   ├── AppDb/              # 主数据库迁移
-│   │   └── OtherDb/            # 其他数据库迁移（如有）
-│   └── Web/                    # SolidJS 前端项目
-│       ├── components/         # 前端组件
-│       ├── pages/              # 页面
-│       ├── services/           # API 调用封装
-│       └── App.tsx             # 前端入口
-└── tests/                      # 测试项目
+│   └── Migrations/             # EF Core 迁移程序集（独立）
+│       ├── AppDb/              # 主数据库迁移
+│       └── OtherDb/            # 其他数据库迁移（如有）
+├── web/                         # SolidJS 前端项目
+│   ├── components/              # 前端组件
+│   │   ├── ui/                 # 基础 UI 组件
+│   │   └── features/           # 业务组件
+│   ├── pages/                   # 页面
+│   ├── stores/                  # 全局状态管理
+│   ├── services/                # API 调用封装
+│   ├── utils/                   # 工具函数
+│   └── App.tsx                  # 前端入口
+├── specs/                       # OpenSpec 最终规格
+├── changes/                     # OpenSpec 变更提案
+└── tests/                       # 测试项目
     ├── Domain.Tests/
     ├── Application.Tests/
     ├── Infrastructure.Tests/
-    └── API.Tests/
+    ├── API.Tests/
+    └── Web.Tests/
 ```
 
 ## 快速开始
@@ -71,14 +78,14 @@
 ### 后端
 
 ```bash
-cd src/API
+cd server/API
 dotnet run
 ```
 
 ### 前端
 
 ```bash
-cd src/Web
+cd web
 npm install
 npm run dev
 ```
@@ -87,10 +94,10 @@ npm run dev
 
 ```bash
 # 启动后端 API
-dotnet run --project src/API
+dotnet run --project server/API
 
 # 在另一个终端启动前端
-cd src/Web
+cd web
 npm run dev
 ```
 

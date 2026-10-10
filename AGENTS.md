@@ -73,7 +73,7 @@ Domain (领域层) ← Infrastructure (基础设施层)
 ### 后端代码结构
 
 ```
-src/
+server/
 ├── Domain/                      # 领域层（核心，无外部依赖）
 │   ├── Entities/               # 领域实体
 │   │   └── Order.cs
@@ -411,7 +411,7 @@ else
 ### 前端代码结构
 
 ```
-src/Web/
+web/
 ├── components/        # 可复用组件
 │   ├── ui/           # 基础 UI 组件
 │   └── features/     # 业务组件
@@ -456,60 +456,64 @@ export function MyComponent(props: Props) {
 
 ```
 MinGo.Wayfinder/
-├── src/
-│   ├── Domain/              # 领域层（核心业务）
-│   │   ├── Entities/        # 领域实体
-│   │   ├── ValueObjects/    # 值对象
-│   │   ├── Aggregates/      # 聚合根
-│   │   ├── Interfaces/      # 领域接口
-│   │   └── Events/          # 领域事件
+├── server/                # ASP.NET Core 后端项目
+│   ├── Domain/            # 领域层（核心业务）
+│   │   ├── Entities/      # 领域实体
+│   │   ├── ValueObjects/  # 值对象
+│   │   ├── Aggregates/    # 聚合根
+│   │   ├── Interfaces/    # 领域接口
+│   │   └── Events/        # 领域事件
 │   │
-│   ├── Application/         # 应用层（业务编排）
-│   │   ├── Interfaces/      # 应用服务接口
-│   │   ├── Services/        # 应用服务实现
-│   │   └── DTOs/            # 数据传输对象
+│   ├── Application/       # 应用层（业务编排）
+│   │   ├── Interfaces/    # 应用服务接口
+│   │   ├── Services/      # 应用服务实现
+│   │   └── DTOs/          # 数据传输对象
 │   │
-│   ├── Infrastructure/      # 基础设施层（技术实现）
-│   │   ├── Persistence/     # EF Core 数据访问
+│   ├── Infrastructure/    # 基础设施层（技术实现）
+│   │   ├── Persistence/   # EF Core 数据访问
 │   │   │   ├── AppDbContext.cs
 │   │   │   ├── Repositories/
 │   │   │   └── Configurations/
-│   │   └── Services/        # 外部服务集成
+│   │   └── Services/      # 外部服务集成
 │   │
-│   ├── API/                 # Web API 层（HTTP 接口）
-│   │   ├── Controllers/     # API 控制器
-│   │   ├── Middleware/      # 中间件
-│   │   └── Program.cs       # 应用入口
+│   ├── API/               # Web API 层（HTTP 接口）
+│   │   ├── Controllers/   # API 控制器
+│   │   ├── Middleware/    # 中间件
+│   │   └── Program.cs     # 应用入口
 │   │
-│   ├── Migrations/          # EF Core 迁移程序集（独立）
-│   │   ├── AppDb/           # 主数据库迁移
-│   │   └── OtherDb/         # 其他数据库迁移
-│   │
-│   └── Web/                 # SolidJS 前端项目
-│       ├── components/      # 前端组件
-│       ├── pages/           # 页面
-│       ├── services/        # API 调用封装
-│       └── App.tsx          # 前端入口
+│   └── Migrations/        # EF Core 迁移程序集（独立）
+│       ├── AppDb/         # 主数据库迁移
+│       └── OtherDb/       # 其他数据库迁移
 │
-├── tests/                   # 测试项目
-│   ├── Domain.Tests/        # 领域层单元测试
-│   ├── Application.Tests/   # 应用层单元测试
+├── web/                   # SolidJS 前端项目
+│   ├── components/        # 前端组件
+│   ├── pages/             # 页面
+│   ├── services/          # API 调用封装
+│   └── App.tsx            # 前端入口
+│
+├── specs/                 # OpenSpec 最终规格
+├── changes/               # OpenSpec 变更提案
+│
+├── tests/                 # 测试项目
+│   ├── Domain.Tests/      # 领域层单元测试
+│   ├── Application.Tests/ # 应用层单元测试
 │   ├── Infrastructure.Tests/# 基础设施层单元测试
-│   └── API.Tests/           # API 集成测试
+│   ├── API.Tests/         # API 集成测试
+│   └── Web.Tests/         # 前端测试
 │
-├── docs/                    # 文档
-├── AGENTS.md               # AI Agent 指南
-└── README.md               # 项目说明
+├── docs/                  # 文档
+├── AGENTS.md             # AI Agent 指南
+└── README.md             # 项目说明
 ```
 
 ## 前后端协作
 
 ### API 调用规范
 
-前端通过 `src/Web/services/` 目录封装 API 调用：
+前端通过 `web/services/` 目录封装 API 调用：
 
 ```typescript
-// src/Web/services/api.ts
+// web/services/api.ts
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 export async function fetchWeatherForecasts() {
@@ -563,8 +567,8 @@ app.UseCors();
 
 ```bash
 # 创建领域实体和接口
-src/Domain/Entities/Product.cs
-src/Domain/Interfaces/IProductRepository.cs
+server/Domain/Entities/Product.cs
+server/Domain/Interfaces/IProductRepository.cs
 ```
 
 ```csharp
@@ -602,9 +606,9 @@ public interface IProductRepository
 #### 2. 应用层 (Application)
 
 ```bash
-src/Application/DTOs/ProductDto.cs
-src/Application/Interfaces/IProductService.cs
-src/Application/Services/ProductService.cs
+server/Application/DTOs/ProductDto.cs
+server/Application/Interfaces/IProductService.cs
+server/Application/Services/ProductService.cs
 ```
 
 ```csharp
@@ -634,8 +638,8 @@ public class ProductService : IProductService
 #### 3. 基础设施层 (Infrastructure)
 
 ```bash
-src/Infrastructure/Persistence/Configurations/ProductConfiguration.cs
-src/Infrastructure/Persistence/Repositories/ProductRepository.cs
+server/Infrastructure/Persistence/Configurations/ProductConfiguration.cs
+server/Infrastructure/Persistence/Repositories/ProductRepository.cs
 ```
 
 ```csharp
@@ -671,7 +675,7 @@ public class ProductRepository : IProductRepository
 #### 4. API 层
 
 ```bash
-src/API/Controllers/ProductsController.cs
+server/API/Controllers/ProductsController.cs
 ```
 
 ```csharp
@@ -699,7 +703,7 @@ public class ProductsController : ControllerBase
 #### 5. 注册依赖注入
 
 ```csharp
-// API/Program.cs
+// server/API/Program.cs
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 ```
@@ -708,13 +712,13 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 ```bash
 dotnet ef migrations add AddProduct \
-  --project src/Migrations/AppDb \
-  --startup-project src/API
+  --project server/Migrations/AppDb \
+  --startup-project server/API
 ```
 
 ### 添加新页面（前端）
 
-1. 在 `src/Web/pages/` 创建页面组件
+1. 在 `web/pages/` 创建页面组件
 2. 在路由配置中注册路由
 3. 使用 daisyui 的布局组件（drawer, navbar 等）
 
