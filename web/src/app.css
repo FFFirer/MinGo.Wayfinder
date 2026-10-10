@@ -544,6 +544,11 @@ li[role="separator"] {
   flex: 1;
   overflow-y: auto;
   padding: 12px;
+  display: flex;
+}
+
+.kanban-mobile-content > div {
+  flex: 1;
 }
 
 /* Tabs (mobile) */
