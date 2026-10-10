@@ -68,36 +68,36 @@ const Home: Component = () => {
         <Card variant="outlined">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-primary"></div>
-              <p class="text-sm text-on-surface">Primary</p>
+              <div class="h-16 bg-primary rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Primary</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-secondary"></div>
-              <p class="text-sm text-on-surface">Secondary</p>
+              <div class="h-16 bg-secondary rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Secondary</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-tertiary"></div>
-              <p class="text-sm text-on-surface">Tertiary</p>
+              <div class="h-16 bg-tertiary rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Tertiary</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-error"></div>
-              <p class="text-sm text-on-surface">Error</p>
+              <div class="h-16 bg-error rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Error</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-primary-container"></div>
-              <p class="text-sm text-on-surface">Primary Container</p>
+              <div class="h-16 bg-primary-container rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Primary Container</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-secondary-container"></div>
-              <p class="text-sm text-on-surface">Secondary Container</p>
+              <div class="h-16 bg-secondary-container rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Secondary Container</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-tertiary-container"></div>
-              <p class="text-sm text-on-surface">Tertiary Container</p>
+              <div class="h-16 bg-tertiary-container rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Tertiary Container</p>
             </div>
             <div class="space-y-2">
-              <div class="h-16 rounded-lg bg-error-container"></div>
-              <p class="text-sm text-on-surface">Error Container</p>
+              <div class="h-16 bg-error-container rounded-large"></div>
+              <p class="md-label-medium text-on-surface">Error Container</p>
             </div>
           </div>
         </Card>

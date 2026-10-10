@@ -9,7 +9,7 @@ const MainLayout: Component<MainLayoutProps> = (props) => {
     <div class="min-h-screen bg-background">
       <header class="navbar bg-surface shadow-sm">
         <div class="navbar-start">
-          <a href="/" class="btn btn-ghost text-xl text-primary">
+          <a href="/" class="btn btn-ghost md-title-large text-primary">
             Wayfinder
           </a>
         </div>
