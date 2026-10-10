@@ -51,7 +51,7 @@ const TaskCard: Component<TaskCardProps> = (props) => {
     >
       <div class="flex items-start justify-between gap-2 mb-2">
         <div class="flex-1 min-w-0">
-          <span class="md-label-small text-on-surface-variant/60 mr-1.5">#{props.task.id}</span>
+          <span class="inline-block px-1.5 py-0.5 mr-2 rounded-extra-small bg-surface-container-high text-on-surface md-label-medium font-mono select-all cursor-text">#{props.task.id}</span>
           <h3 class="md-title-medium text-on-surface inline line-clamp-2">
             {props.task.title}
           </h3>

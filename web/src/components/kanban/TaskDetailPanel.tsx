@@ -149,7 +149,7 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
                     <div class="space-y-5">
                       <div>
                         <div class="flex items-center gap-2 mb-2">
-                          <span class="md-label-small text-on-surface-variant/60">#{task()!.id}</span>
+                          <span class="inline-block px-1.5 py-0.5 rounded-extra-small bg-surface-container-high text-on-surface md-label-medium font-mono select-all cursor-text">#{task()!.id}</span>
                           <h3 class="md-headline-small text-on-surface">{task()!.title}</h3>
                         </div>
                         <div class="flex items-center gap-2">
