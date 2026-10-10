@@ -25,8 +25,7 @@ const MenuItem: Component<MenuItemProps> = (props) => {
         type="button"
         class="md-menu-item"
         classList={{
-          'md-menu-item--selected': props.selected,
-          'md-menu-item--disabled': props.disabled,
+          active: props.selected,
         }}
         disabled={props.disabled}
         onClick={props.onClick}
@@ -44,8 +43,6 @@ const MenuItem: Component<MenuItemProps> = (props) => {
 };
 
 const Menu: Component<MenuProps> = (props) => {
-  const [isOpen, setIsOpen] = createSignal(false);
-
   const anchorClasses = {
     'top start': 'dropdown-bottom dropdown-start',
     'top end': 'dropdown-bottom dropdown-end',
@@ -57,17 +54,8 @@ const Menu: Component<MenuProps> = (props) => {
 
   return (
     <div class={`dropdown ${anchorClasses[currentAnchor()]}`}>
-      <div
-        onClick={() => setIsOpen(!isOpen())}
-        onBlur={() => setTimeout(() => setIsOpen(false), 100)}
-      >
-        {props.trigger}
-      </div>
-      <ul
-        tabindex="0"
-        class={`md-menu ${props.class ?? ''}`}
-        classList={{ 'md-menu--open': isOpen() }}
-      >
+      {props.trigger}
+      <ul tabindex="0" class={`dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 ${props.class ?? ''}`}>
         {props.children}
       </ul>
     </div>
