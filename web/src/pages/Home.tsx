@@ -53,6 +53,7 @@ const Home: Component = () => {
                 selected={selectedItem() === 'item3'}
                 onClick={() => setSelectedItem('item3')}
               />
+              <Menu.Divider />
               <Menu.Item label="禁用选项" disabled />
             </Menu>
 

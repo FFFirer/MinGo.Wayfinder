@@ -28,20 +28,24 @@ const MenuItem: Component<MenuItemProps> = (props) => {
   const context = useContext(MenuContext);
 
   const handleClick = () => {
-    props.onClick?.();
-    context?.closeMenu();
+    if (!props.disabled) {
+      props.onClick?.();
+      context?.closeMenu();
+    }
   };
 
   return (
-    <li>
+    <li role="none">
       <button
         type="button"
+        role="menuitem"
         class="md-menu-item"
         classList={{
           active: props.selected,
         }}
         disabled={props.disabled}
         onClick={handleClick}
+        aria-disabled={props.disabled}
       >
         {Icon && (
           <div class="md-menu-item__icon">
@@ -53,6 +57,10 @@ const MenuItem: Component<MenuItemProps> = (props) => {
       </button>
     </li>
   );
+};
+
+const MenuDivider: Component = () => {
+  return <li role="separator"><div class="md-menu-divider" /></li>;
 };
 
 const Menu: Component<MenuProps> = (props) => {
@@ -168,6 +176,7 @@ const Menu: Component<MenuProps> = (props) => {
 };
 
 Menu.Item = MenuItem;
+Menu.Divider = MenuDivider;
 
-export { Menu, MenuItem };
+export { Menu, MenuItem, MenuDivider };
 export default Menu;
