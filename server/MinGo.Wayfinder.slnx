@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src\MinGo.Wayfinder.Domain\MinGo.Wayfinder.Domain.csproj" />
+  <Project Path="src\MinGo.Wayfinder.Application\MinGo.Wayfinder.Application.csproj" />
+  <Project Path="src\MinGo.Wayfinder.Infrastructure\MinGo.Wayfinder.Infrastructure.csproj" />
+  <Project Path="src\MinGo.Wayfinder.API\MinGo.Wayfinder.API.csproj" />
+  <Project Path="migrations\MinGo.Wayfinder.Migrations\MinGo.Wayfinder.Migrations.csproj" />
+</Solution>

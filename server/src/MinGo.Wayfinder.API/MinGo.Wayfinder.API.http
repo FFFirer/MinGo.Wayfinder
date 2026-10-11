@@ -1,0 +1,6 @@
+@MinGo.Wayfinder.API_HostAddress = http://localhost:5299
+
+GET {{MinGo.Wayfinder.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
