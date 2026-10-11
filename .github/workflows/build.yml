@@ -75,5 +75,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wayfinder-web-${{ github.ref_name }}
-          path: wayfinder-web-${{ github.ref_name }}.zip
+          path: web/wayfinder-web-${{ github.ref_name }}.zip
           retention-days: 30
