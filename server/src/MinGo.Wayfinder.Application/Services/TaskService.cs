@@ -26,9 +26,9 @@ public class TaskService : ITaskService
         return tasks.Select(MapToDto);
     }
 
-    public async Task<TaskDto?> GetTaskByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<TaskDto?> GetTaskByUuidAsync(Guid uuid, CancellationToken cancellationToken = default)
     {
-        var task = await _taskRepository.GetByIdAsync(id, cancellationToken);
+        var task = await _taskRepository.GetByUuidAsync(uuid, cancellationToken);
         return task == null || task.IsDeleted ? null : MapToDto(task);
     }
 
@@ -39,22 +39,22 @@ public class TaskService : ITaskService
         return MapToDto(task);
     }
 
-    public async Task<TaskDto> UpdateTaskAsync(int id, UpdateTaskDto dto, CancellationToken cancellationToken = default)
+    public async Task<TaskDto> UpdateTaskAsync(Guid uuid, UpdateTaskDto dto, CancellationToken cancellationToken = default)
     {
-        var task = await _taskRepository.GetByIdAsync(id, cancellationToken);
+        var task = await _taskRepository.GetByUuidAsync(uuid, cancellationToken);
         if (task == null || task.IsDeleted)
-            throw new KeyNotFoundException($"Task with id {id} not found");
+            throw new KeyNotFoundException($"Task with uuid {uuid} not found");
 
         task.Update(dto.Title, dto.Description, dto.Status);
         await _taskRepository.UpdateAsync(task, cancellationToken);
         return MapToDto(task);
     }
 
-    public async Task DeleteTaskAsync(int id, CancellationToken cancellationToken = default)
+    public async Task DeleteTaskAsync(Guid uuid, CancellationToken cancellationToken = default)
     {
-        var task = await _taskRepository.GetByIdAsync(id, cancellationToken);
+        var task = await _taskRepository.GetByUuidAsync(uuid, cancellationToken);
         if (task == null || task.IsDeleted)
-            throw new KeyNotFoundException($"Task with id {id} not found");
+            throw new KeyNotFoundException($"Task with uuid {uuid} not found");
 
         task.Delete();
         await _taskRepository.UpdateAsync(task, cancellationToken);
@@ -63,13 +63,13 @@ public class TaskService : ITaskService
     private static TaskDto MapToDto(KanbanTask task)
     {
         return new TaskDto(
+            task.Uuid,
             task.Id,
             task.Title,
             task.Description,
             task.Status,
             task.CreatedAt,
-            task.UpdatedAt,
-            task.IsDeleted
+            task.UpdatedAt
         );
     }
 }

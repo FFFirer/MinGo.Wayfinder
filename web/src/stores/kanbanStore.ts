@@ -1,110 +1,101 @@
 import { createStore } from 'solid-js/store';
 import { type Task, type TaskStatus } from '../types/kanban';
+import { tasksApi } from '../services/tasks';
 
 export type PanelMode = 'view' | 'edit' | 'create';
 
 interface KanbanState {
   tasks: Task[];
-  selectedTaskId: string | null;
+  selectedTaskUuid: string | null;
   panelMode: PanelMode | null;
   activeTab: TaskStatus;
+  loading: boolean;
+  error: string | null;
 }
-
-const initialTasks: Task[] = [
-  {
-    id: '1',
-    title: '设计数据库 Schema',
-    description: '根据需求文档设计数据库表结构，包括用户表、任务表、项目表等核心表的字段定义和关联关系。',
-    status: 'done',
-    createdAt: '2026-10-08',
-  },
-  {
-    id: '2',
-    title: '实现用户认证模块',
-    description: '基于 JWT 实现用户登录、注册、Token 刷新等功能。',
-    status: 'in_progress',
-    createdAt: '2026-10-09',
-  },
-  {
-    id: '3',
-    title: '编写 API 文档',
-    description: '使用 OpenAPI 规范编写 RESTful API 接口文档。',
-    status: 'todo',
-    createdAt: '2026-10-10',
-  },
-  {
-    id: '4',
-    title: '前端看板页面开发',
-    description: '实现 Kanban 看板视图，包含任务卡片、状态切换、详情面板等交互功能。',
-    status: 'in_progress',
-    createdAt: '2026-10-10',
-  },
-  {
-    id: '5',
-    title: '代码审查：订单模块',
-    description: '审查订单模块的代码质量、性能优化建议和安全性检查。',
-    status: 'review',
-    createdAt: '2026-10-11',
-  },
-  {
-    id: '6',
-    title: '部署测试环境',
-    description: '配置 CI/CD 流水线，将应用部署到测试服务器。',
-    status: 'todo',
-    createdAt: '2026-10-11',
-  },
-];
 
 export function createKanbanStore() {
   const [state, setState] = createStore<KanbanState>({
-    tasks: initialTasks,
-    selectedTaskId: null,
+    tasks: [],
+    selectedTaskUuid: null,
     panelMode: null,
     activeTab: 'todo',
+    loading: true,
+    error: null,
   });
+
+  const loadTasks = async () => {
+    setState('loading', true);
+    setState('error', null);
+    try {
+      const tasks = await tasksApi.getAll();
+      setState('tasks', tasks);
+    } catch (err) {
+      setState('error', err instanceof Error ? err.message : 'Failed to load tasks');
+    } finally {
+      setState('loading', false);
+    }
+  };
 
   const tasksByStatus = (status: TaskStatus): Task[] =>
     state.tasks.filter(t => t.status === status);
 
   const selectedTask = (): Task | undefined =>
-    state.tasks.find(t => t.id === state.selectedTaskId);
+    state.tasks.find(t => t.uuid === state.selectedTaskUuid);
 
-  const createTask = (title: string, description: string) => {
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title,
-      description,
-      status: 'todo',
-      createdAt: new Date().toISOString().split('T')[0],
-    };
-    setState('tasks', tasks => [...tasks, newTask]);
-    setState('selectedTaskId', newTask.id);
-    setState('panelMode', 'view');
+  const createTask = async (title: string, description: string) => {
+    setState('error', null);
+    try {
+      const newTask = await tasksApi.create({ title, description });
+      setState('tasks', tasks => [...tasks, newTask]);
+      setState('selectedTaskUuid', newTask.uuid);
+      setState('panelMode', 'view');
+    } catch (err) {
+      setState('error', err instanceof Error ? err.message : 'Failed to create task');
+    }
   };
 
-  const updateTask = (id: string, partial: Partial<Pick<Task, 'title' | 'description' | 'status'>>) => {
-    setState('tasks', tasks =>
-      tasks.map(t => t.id === id ? { ...t, ...partial } : t)
-    );
+  const updateTask = async (uuid: string, partial: Partial<Pick<Task, 'title' | 'description' | 'status'>>) => {
+    const task = state.tasks.find(t => t.uuid === uuid);
+    if (!task) return;
+
+    setState('error', null);
+    try {
+      const updatedTask = await tasksApi.update(uuid, {
+        title: partial.title ?? task.title,
+        description: partial.description ?? task.description,
+        status: partial.status ?? task.status,
+      });
+      setState('tasks', tasks =>
+        tasks.map(t => t.uuid === uuid ? updatedTask : t)
+      );
+    } catch (err) {
+      setState('error', err instanceof Error ? err.message : 'Failed to update task');
+    }
   };
 
-  const deleteTask = (id: string) => {
-    setState('tasks', tasks => tasks.filter(t => t.id !== id));
-    setState('selectedTaskId', null);
-    setState('panelMode', null);
+  const deleteTask = async (uuid: string) => {
+    setState('error', null);
+    try {
+      await tasksApi.delete(uuid);
+      setState('tasks', tasks => tasks.filter(t => t.uuid !== uuid));
+      setState('selectedTaskUuid', null);
+      setState('panelMode', null);
+    } catch (err) {
+      setState('error', err instanceof Error ? err.message : 'Failed to delete task');
+    }
   };
 
-  const changeTaskStatus = (id: string, newStatus: TaskStatus) => {
-    updateTask(id, { status: newStatus });
+  const changeTaskStatus = (uuid: string, newStatus: TaskStatus) => {
+    updateTask(uuid, { status: newStatus });
   };
 
-  const selectTask = (id: string) => {
-    setState('selectedTaskId', id);
+  const selectTask = (uuid: string) => {
+    setState('selectedTaskUuid', uuid);
     setState('panelMode', 'view');
   };
 
   const openCreatePanel = () => {
-    setState('selectedTaskId', null);
+    setState('selectedTaskUuid', null);
     setState('panelMode', 'create');
   };
 
@@ -113,13 +104,15 @@ export function createKanbanStore() {
   };
 
   const closePanel = () => {
-    setState('selectedTaskId', null);
+    setState('selectedTaskUuid', null);
     setState('panelMode', null);
   };
 
   const setActiveTab = (status: TaskStatus) => {
     setState('activeTab', status);
   };
+
+  loadTasks();
 
   return {
     get state() { return state; },
@@ -134,6 +127,7 @@ export function createKanbanStore() {
     enterEditMode,
     closePanel,
     setActiveTab,
+    loadTasks,
   };
 }
 

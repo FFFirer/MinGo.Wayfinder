@@ -55,6 +55,13 @@ public class TaskRepository : ITaskRepository
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
+    public async Task<KanbanTask?> GetByUuidAsync(Guid uuid, CancellationToken cancellationToken = default)
+    {
+        return await _context.Tasks
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(t => t.Uuid == uuid, cancellationToken);
+    }
+
     public async Task AddAsync(KanbanTask task, CancellationToken cancellationToken = default)
     {
         await _context.Tasks.AddAsync(task, cancellationToken);

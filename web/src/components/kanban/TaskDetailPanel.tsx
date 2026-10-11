@@ -6,6 +6,7 @@ import Button from '../ui/Button';
 import TextField from '../ui/TextField';
 import Chip from '../ui/Chip';
 import Menu from '../ui/Menu';
+import { formatLocalDate } from '../../utils/datetime';
 
 interface TaskDetailPanelProps {
   store: KanbanStore;
@@ -76,14 +77,13 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
     } else if (isEdit()) {
       const task = props.store.selectedTask();
       if (task) {
-        props.store.updateTask(task.id, {
+        props.store.updateTask(task.uuid, {
           title: t,
           description: description().trim(),
           status: status(),
         });
         props.store.enterEditMode();
-        // Switch back to view after save
-        props.store.selectTask(task.id);
+        props.store.selectTask(task.uuid);
       }
     }
   };
@@ -91,7 +91,7 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
   const handleDelete = () => {
     const task = props.store.selectedTask();
     if (task) {
-      props.store.deleteTask(task.id);
+      props.store.deleteTask(task.uuid);
     }
   };
 
@@ -158,7 +158,7 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
                             variant="tonal"
                           />
                           <span class="md-body-small text-on-surface-variant">
-                            创建于 {task()!.createdAt}
+                            创建于 {formatLocalDate(task()!.createdAt)}
                           </span>
                         </div>
                       </div>
@@ -204,7 +204,7 @@ const TaskDetailPanel: Component<TaskDetailPanelProps> = (props) => {
                     const task = () => props.store.selectedTask();
                     return (
                       <p class="md-body-small text-on-surface-variant -mt-3">
-                        创建于 {task()?.createdAt}
+                        创建于 {task() ? formatLocalDate(task()!.createdAt) : ''}
                       </p>
                     );
                   })()}

@@ -1,11 +1,25 @@
 export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'done';
 
 export interface Task {
-  id: string;
+  uuid: string;
+  id: number;
   title: string;
   description: string;
   status: TaskStatus;
   createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateTaskDto {
+  title: string;
+  description?: string;
+  status?: TaskStatus;
+}
+
+export interface UpdateTaskDto {
+  title: string;
+  description?: string;
+  status: TaskStatus;
 }
 
 export interface ColumnDef {

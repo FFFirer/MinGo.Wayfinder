@@ -7,7 +7,7 @@ export interface MenuItemProps {
   shortcut?: string;
   disabled?: boolean;
   selected?: boolean;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent) => void;
 }
 
 export interface MenuProps {
@@ -27,9 +27,9 @@ const MenuItem: Component<MenuItemProps> = (props) => {
   const Icon = props.icon;
   const context = useContext(MenuContext);
 
-  const handleClick = () => {
+  const handleClick = (e: MouseEvent) => {
     if (!props.disabled) {
-      props.onClick?.();
+      props.onClick?.(e);
       context?.closeMenu();
     }
   };

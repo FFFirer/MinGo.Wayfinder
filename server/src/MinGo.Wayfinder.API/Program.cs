@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using MinGo.Wayfinder.API.JsonConverters;
 using MinGo.Wayfinder.API.Middleware;
 using MinGo.Wayfinder.Application.Interfaces;
 using MinGo.Wayfinder.Application.Services;
+using MinGo.Wayfinder.Domain.Enums;
 using MinGo.Wayfinder.Domain.Interfaces;
 using MinGo.Wayfinder.Infrastructure.Persistence;
 using MinGo.Wayfinder.Infrastructure.Persistence.Repositories;
@@ -17,7 +20,32 @@ builder.Logging.AddSimpleConsole(options =>
 });
 
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new KanbanTaskStatusConverter());
+    });
+
+// Configure CORS
+var allowAllCors = builder.Configuration.GetValue<bool>("Cors:AllowAll");
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        if (allowAllCors)
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+        else
+        {
+            policy.WithOrigins("https://your-production-domain.com")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+    });
+});
 
 // Configure EF Core with SQLite
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -53,6 +81,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
+
+app.UseCors();
 
 app.UseAuthorization();
 

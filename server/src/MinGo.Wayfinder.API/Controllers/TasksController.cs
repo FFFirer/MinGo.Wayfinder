@@ -36,10 +36,10 @@ public class TasksController : ControllerBase
         return Ok(tasks);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<TaskDto>> GetById(int id, CancellationToken cancellationToken = default)
+    [HttpGet("{uuid:guid}")]
+    public async Task<ActionResult<TaskDto>> GetById(Guid uuid, CancellationToken cancellationToken = default)
     {
-        var task = await _taskService.GetTaskByIdAsync(id, cancellationToken);
+        var task = await _taskService.GetTaskByUuidAsync(uuid, cancellationToken);
         return task == null ? NotFound() : Ok(task);
     }
 
@@ -47,20 +47,20 @@ public class TasksController : ControllerBase
     public async Task<ActionResult<TaskDto>> Create([FromBody] CreateTaskDto dto, CancellationToken cancellationToken = default)
     {
         var task = await _taskService.CreateTaskAsync(dto, cancellationToken);
-        return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);
+        return CreatedAtAction(nameof(GetById), new { uuid = task.Uuid }, task);
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<TaskDto>> Update(int id, [FromBody] UpdateTaskDto dto, CancellationToken cancellationToken = default)
+    [HttpPut("{uuid:guid}")]
+    public async Task<ActionResult<TaskDto>> Update(Guid uuid, [FromBody] UpdateTaskDto dto, CancellationToken cancellationToken = default)
     {
-        var task = await _taskService.UpdateTaskAsync(id, dto, cancellationToken);
+        var task = await _taskService.UpdateTaskAsync(uuid, dto, cancellationToken);
         return Ok(task);
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
+    [HttpDelete("{uuid:guid}")]
+    public async Task<IActionResult> Delete(Guid uuid, CancellationToken cancellationToken = default)
     {
-        await _taskService.DeleteTaskAsync(id, cancellationToken);
+        await _taskService.DeleteTaskAsync(uuid, cancellationToken);
         return NoContent();
     }
 }

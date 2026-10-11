@@ -5,11 +5,12 @@ namespace MinGo.Wayfinder.Domain.Entities;
 public class KanbanTask
 {
     public int Id { get; private set; }
+    public Guid Uuid { get; private set; }
     public string Title { get; private set; } = string.Empty;
     public string? Description { get; private set; }
     public KanbanTaskStatus Status { get; private set; }
-    public long CreatedAt { get; private set; }
-    public long UpdatedAt { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
     public bool IsDeleted { get; private set; }
 
     protected KanbanTask() { }
@@ -22,11 +23,12 @@ public class KanbanTask
         if (title.Length > 200)
             throw new ArgumentException("Title cannot exceed 200 characters", nameof(title));
 
+        Uuid = Guid.NewGuid();
         Title = title;
         Description = description;
         Status = KanbanTaskStatus.Todo;
         IsDeleted = false;
-        CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        CreatedAt = DateTime.UtcNow;
         UpdatedAt = CreatedAt;
     }
 
@@ -41,7 +43,7 @@ public class KanbanTask
         Title = title;
         Description = description;
         Status = status;
-        UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Delete()
@@ -50,6 +52,6 @@ public class KanbanTask
             throw new InvalidOperationException("Task is already deleted");
 
         IsDeleted = true;
-        UpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        UpdatedAt = DateTime.UtcNow;
     }
 }

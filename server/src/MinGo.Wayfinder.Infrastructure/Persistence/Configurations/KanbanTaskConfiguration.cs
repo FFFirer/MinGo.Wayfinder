@@ -11,6 +11,12 @@ public class KanbanTaskConfiguration : IEntityTypeConfiguration<KanbanTask>
     {
         builder.HasKey(t => t.Id);
 
+        builder.HasIndex(t => t.Uuid)
+            .IsUnique();
+
+        builder.Property(t => t.Uuid)
+            .IsRequired();
+
         builder.Property(t => t.Title)
             .HasMaxLength(200)
             .IsRequired();

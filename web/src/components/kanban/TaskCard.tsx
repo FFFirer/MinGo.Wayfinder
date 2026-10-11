@@ -28,19 +28,20 @@ const TaskCard: Component<TaskCardProps> = (props) => {
   const handleClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('[data-card-action]')) return;
-    props.store.selectTask(props.task.id);
+    props.store.selectTask(props.task.uuid);
   };
 
-  const handleStatusChange = (newStatus: TaskStatus) => {
-    props.store.changeTaskStatus(props.task.id, newStatus);
+  const handleStatusChange = (e: MouseEvent, newStatus: TaskStatus) => {
+    e.stopPropagation();
+    props.store.changeTaskStatus(props.task.uuid, newStatus);
   };
 
   const handleDelete = () => {
-    props.store.deleteTask(props.task.id);
+    props.store.deleteTask(props.task.uuid);
   };
 
   const handleEdit = () => {
-    props.store.selectTask(props.task.id);
+    props.store.selectTask(props.task.uuid);
     props.store.enterEditMode();
   };
 
@@ -103,7 +104,7 @@ const TaskCard: Component<TaskCardProps> = (props) => {
             <Menu.Item
               label={col.label}
               selected={col.key === props.task.status}
-              onClick={() => handleStatusChange(col.key)}
+              onClick={(e) => handleStatusChange(e, col.key)}
             />
           ))}
         </Menu>
